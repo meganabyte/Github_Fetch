@@ -26,7 +26,7 @@ func Repo(ctx context.Context, client *github.Client, username string) ([]*githu
 }
 
 func IssuesCreated(ctx context.Context, client *github.Client, repoOwner string, repoName string, 
-				   username string, yearAgo time.Time) ([]*github.Issue)  {
+		   username string, yearAgo time.Time) ([]*github.Issue)  {
 	var issueListCreator []*github.Issue
 	opt := &github.IssueListByRepoOptions{Creator: username, Since: yearAgo, ListOptions: github.ListOptions{PerPage: 30}}
 	for {
@@ -44,7 +44,7 @@ func IssuesCreated(ctx context.Context, client *github.Client, repoOwner string,
 }
 
 func IssueEvents(ctx context.Context, client *github.Client, repoOwner string, repoName string, 
-	username string, yearAgo time.Time) ([]*github.Issue) {
+		 username string, yearAgo time.Time) ([]*github.Issue) {
 	var issueList []*github.Issue
 	opt := &github.IssueListByRepoOptions{Since: yearAgo, ListOptions: github.ListOptions{PerPage: 30}}
 	for {
@@ -62,7 +62,7 @@ func IssueEvents(ctx context.Context, client *github.Client, repoOwner string, r
 } 
 
 func Pulls(ctx context.Context, client *github.Client, repoOwner string, repoName string, 
-		   username string, yearAgo time.Time) ([]*github.PullRequest) {
+	   username string, yearAgo time.Time) ([]*github.PullRequest) {
 	var pullsList []*github.PullRequest
 	opt := &github.PullRequestListOptions{State: "all", ListOptions: github.ListOptions{PerPage: 30}}
 	for {
@@ -81,7 +81,7 @@ func Pulls(ctx context.Context, client *github.Client, repoOwner string, repoNam
 }
 
 func Commits(ctx context.Context, client *github.Client, repoOwner string, repoName string, username string, 
-			 yearAgo time.Time, repo *github.Repository) ([]*github.RepositoryCommit) {
+	     yearAgo time.Time, repo *github.Repository) ([]*github.RepositoryCommit) {
 	var commitsList []*github.RepositoryCommit
 	opt := &github.CommitsListOptions{Author: username, Since: yearAgo, ListOptions: github.ListOptions{PerPage: 30},}
 	if repo.GetSize() != 0 {
