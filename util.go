@@ -24,19 +24,19 @@ func AddToMap(aMap map[int]int, time string) {
 	}
 }
 
-func ComputeContr(mIssues map[int]int, mPulls map[int]int, mCommits map[int]int) [365]int {
-	var result [365]int
+func ComputeContr(mIssues map[int]int, mPulls map[int]int, mCommits map[int]int) [366]int {
+	var result [366]int
 	arrIssues := getContr(mIssues)
 	arrPulls := getContr(mPulls)
 	arrCommits := getContr(mCommits)
-	for i := 0; i < 365; i++ {
+	for i := 0; i < 366; i++ {
 		result[i] = arrIssues[i] + arrPulls[i] + arrCommits[i]
 	}
 	return result
 }
 
-func getContr(m map[int]int) [365]int {
-	var arr [365]int
+func getContr(m map[int]int) [366]int {
+	var arr [366]int
 	for key, value := range m {
 		arr[key] = value
 	}
