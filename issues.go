@@ -22,7 +22,8 @@ func GetIssueEventTimes(ctx context.Context, client *github.Client, repoOwner st
 		num := issue.GetNumber()
 		events, _, _ := client.Issues.ListIssueEvents(ctx, repoOwner, repoName, num, nil)
 		for _, event := range events {
-			if *event.Event == "assigned" && event.Assignee.GetLogin() == username || *event.Event == "mentioned" && event.Actor.GetLogin() == username {
+			if *event.Event == "assigned" && event.Assignee.GetLogin() == username ||
+			   *event.Event == "mentioned" && event.Actor.GetLogin() == username {
 				time = event.GetCreatedAt().Format("2006-01-02")
 				util.AddToMap(mIssues, time)
 			}
