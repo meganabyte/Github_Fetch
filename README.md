@@ -6,6 +6,7 @@ Github_Fetch requires Go version 1.9 or later
 
 ## Usage
 import "https://github.com/meganabyte/Github_Fetch/github" ...
+To run program, go run fetch 
 
 ### Authentication
 Create an OAuth2 Access token (for example, a personal API token) and store it as an environment variable. The Github_Fetch library will directly handle authentication for you.
