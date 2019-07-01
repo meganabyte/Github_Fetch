@@ -16,7 +16,7 @@ func GetIssueCreatedTimes(issueListCreator []*github.Issue, mIssues map[int]int)
 }
 
 func GetIssueEventTimes(ctx context.Context, client *github.Client, repoOwner string, repoName string, username string, 
-						issueList []*github.Issue, mIssues map[int]int) {
+			issueList []*github.Issue, mIssues map[int]int) {
 	var time string
 	for _, issue := range issueList {
 		num := issue.GetNumber()
