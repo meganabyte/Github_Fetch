@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-    "sync"
+    	"sync"
 	"time"
 	"issues"
 	"pulls"
@@ -31,17 +31,17 @@ func main() {
 	}
 
 	mIssues := make(map[int]int)
-    mPulls := make(map[int]int)
+    	mPulls := make(map[int]int)
 	mCommits := make(map[int]int)
 	repoList := paginate.Repo(ctx, client, username)
 	for i := 0; i < len(repoList); i++ {
 		repo := repoList[i]
 		repoName := repo.GetName()
 		repoOwner := repo.GetOwner().GetLogin()
-			issueListCreator := paginate.IssuesCreated(ctx, client, repoOwner, repoName, username, yearAgo)
-			issueList := paginate.IssueEvents(ctx, client, repoOwner, repoName, username, yearAgo)
-			pullsList := paginate.Pulls(ctx, client, repoOwner, repoName, username, yearAgo)
-			commitsList := paginate.Commits(ctx, client, repoOwner, repoName, username, yearAgo, repo)
+		issueListCreator := paginate.IssuesCreated(ctx, client, repoOwner, repoName, username, yearAgo)
+		issueList := paginate.IssueEvents(ctx, client, repoOwner, repoName, username, yearAgo)
+		pullsList := paginate.Pulls(ctx, client, repoOwner, repoName, username, yearAgo)
+		commitsList := paginate.Commits(ctx, client, repoOwner, repoName, username, yearAgo, repo)
 		wg.Add(6)
 		go func() {
 			commits.GetCommitTimes(commitsList, nil, mCommits)
