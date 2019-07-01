@@ -5,11 +5,11 @@ Github_Fetch is a library for fetching the contributions of a user of Github in 
 Github_Fetch requires Go version 1.9 or later
 
 ## Usage
-import "https://github.com/meganabyte/Github_Fetch/github"
+import "https://github.com/meganabyte/Github_Fetch/github" ...
 
 ### Authentication
-
+Create an OAuth2 Access token (for example, a personal API token) and store it as an environment variable
 
 ## Acknowledgments
-
+https://github.com/google/go-github
 
