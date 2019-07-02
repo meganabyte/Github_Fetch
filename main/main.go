@@ -19,16 +19,17 @@ import (
 func main() {
 	var wg sync.WaitGroup
 
-	ctx, client := authentication()
 	var yearAgo = time.Now().AddDate(-1, 0, 0)
 
 	flag.Parse()
 	args := flag.Args()
 	username := args[0]
-	if len(args) < 1 {
-		fmt.Println("go run fetch <username>")
+	if len(args) < 2 {
+		fmt.Println("go run fetch <username> <OAUTH token>")
 		os.Exit(1)
-	}
+	} 
+	token := args[1]
+	ctx, client := authentication(token)
 
 	mIssues := make(map[int]int)
 	mPulls := make(map[int]int)
@@ -74,9 +75,9 @@ func main() {
 
 // given a context and a reference to a github client, creates an authenticated
 // github client
-func authentication() (context.Context, *github.Client) {
+func authentication(token string) (context.Context, *github.Client) {
 	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: os.Getenv("ACCESS_TOKEN")})
+	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
 	return ctx, client
