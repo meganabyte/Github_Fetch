@@ -1,0 +1,4 @@
+language: go
+rvm:
+ - go1.12.6
+ - darwin/amd64
