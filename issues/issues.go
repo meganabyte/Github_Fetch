@@ -11,7 +11,7 @@ import (
 func GetIssueCreatedTimes(issueListCreator []*github.Issue, mIssues map[int]int) {
 	var time string
 	for _, issue := range issueListCreator {
-		time = issue.GetCreatedAt().Format("2006-01-02")
+		time = issue.GetCreatedAt().Format("2006-01-02T15:04:05Z07:00")
 		util.AddToMap(mIssues, time)
 	}
 }
@@ -20,7 +20,7 @@ func GetIssueCreatedTimes(issueListCreator []*github.Issue, mIssues map[int]int)
 // for that repo, and a record of issues for the user, adds a mapping for events where
 // issue was assigned to user or user was mentioned in issue
 func GetIssueEventTimes(ctx context.Context, client *github.Client, repoOwner string, repoName string,
-	username string, issueList []*github.Issue, mIssues map[int]int) {
+						username string, issueList []*github.Issue, mIssues map[int]int) {
 	var time string
 	for _, issue := range issueList {
 		num := issue.GetNumber()
@@ -29,7 +29,7 @@ func GetIssueEventTimes(ctx context.Context, client *github.Client, repoOwner st
 		for _, event := range events {
 			if *event.Event == "assigned" && event.Assignee.GetLogin() == username ||
 				*event.Event == "mentioned" && event.Actor.GetLogin() == username {
-				time = event.GetCreatedAt().Format("2006-01-02")
+				time = event.GetCreatedAt().Format("2006-01-02T15:04:05Z07:00")
 				util.AddToMap(mIssues, time)
 			}
 		}
