@@ -47,9 +47,6 @@ func main() {
 		pulls.GetPullsReviewRequestTimes(ctx, client, repoOwner, repoName, username, c4, mPulls)
 		time.Sleep(10 * time.Second)
 	}
-	fmt.Println("Issues", mIssues)
-	fmt.Println("Pulls", mPulls)
-	fmt.Println("Commits", mCommits)
 	result := util.ComputeContr(mIssues, mPulls, mCommits)
 	fmt.Println(result)
 }
