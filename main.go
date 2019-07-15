@@ -12,12 +12,15 @@ import (
 	"time"
 	"util"
 	"repos"
+	"sync"
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 )
 
 func main() {
 	var yearAgo = time.Now().AddDate(-1, 0, 0)
+	var wg sync.WaitGroup
+	var wg2 sync.WaitGroup
 
 	flag.Parse()
 	args := flag.Args()
@@ -33,19 +36,41 @@ func main() {
 	mPulls := make(map[int]int)
 	mCommits := make(map[int]int)
 	repoList := repos.GetRepoList(ctx, client, username)
+	commitRepoList, _ := repos.GetCommitRepoList(ctx, client, repoList)
 
-	for _, repo := range repoList {
+	for _, repo := range commitRepoList {
 		repoName, repoOwner := repos.GetRepoInfo(repo)
-		fmt.Println(repoName, repoOwner)
-		c1, _ := paginate.Commits(ctx, client, repoOwner, repoName, username, yearAgo, repo)
-		c2, _ := paginate.IssuesCreated(ctx, client, repoOwner, repoName, username, yearAgo)
-		c3, _ := paginate.IssueEvents(ctx, client, repoOwner, repoName, username, yearAgo)
-		c4, _ := paginate.Pulls(ctx, client, repoOwner, repoName, username, yearAgo)
-		commits.GetCommitTimes(c1, mCommits)
-		issues.GetIssueEventTimes(ctx, client, repoOwner, repoName, username, c3, mIssues)
-		issues.GetIssueCreatedTimes(c2, mIssues)
-		pulls.GetPullsReviewRequestTimes(ctx, client, repoOwner, repoName, username, c4, mPulls)
-		time.Sleep(10 * time.Second)
+		var list1 []*github.Issue
+		var list2 []*github.PullRequest
+		var list3 []*github.RepositoryCommit
+		wg.Add(3)
+		go func() {
+			list1, _ = paginate.IssuesCreated(ctx, client, repoOwner, repoName, username, yearAgo)
+			wg.Done()
+		}()
+		go func() {
+			list2, _ = paginate.Pulls(ctx, client, repoOwner, repoName, username, yearAgo)
+			wg.Done()
+		}()
+		go func() {
+			list3, _ = paginate.Commits(ctx, client, repoOwner, repoName, username, yearAgo, repo)
+			wg.Done()
+		}()
+		wg.Wait()
+		wg2.Add(3)
+		go func(list1 []*github.Issue) {
+			issues.GetIssueCreatedTimes(list1, mIssues)
+			wg2.Done()
+		}(list1)
+		go func(list2 []*github.PullRequest) {
+			pulls.GetPullsReviewRequestTimes(ctx, client, repoOwner, repoName, username, list2, mPulls)
+			wg2.Done()
+		}(list2)
+		go func(list3 []*github.RepositoryCommit) {
+			commits.GetCommitTimes(list3, mCommits)
+			wg2.Done()
+		}(list3)
+		wg2.Wait()
 	}
 	result := util.ComputeContr(mIssues, mPulls, mCommits)
 	fmt.Println(result)
