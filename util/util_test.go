@@ -42,6 +42,6 @@ func TestGetContr(t *testing.T) {
 	m[0] = 1
 	arr := util.GetContr(m)
 	if arr[0] != 1 {
-		fmt.Printf("Error in ComputeContr")
+		fmt.Printf("Error in GetContr")
 	}
 }
