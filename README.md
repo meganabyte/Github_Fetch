@@ -5,7 +5,7 @@ github is a library for fetching the contributions of a user of Github in the la
 github requires Go version 1.9 or later
 
 ## Usage
-import "https://github.com/meganabyte/Github_Fetch/github" ...
+import "github.com/meganabyte/github/github" ...
 To run program, go run main 
 
 ## Acknowledgments
