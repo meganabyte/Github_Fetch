@@ -60,7 +60,6 @@ func Pulls(ctx context.Context, client *github.Client, repoOwner string, repoNam
 func Commits(ctx context.Context, client *github.Client, repoOwner string, repoName string, username string, yearAgo time.Time, 
 			 repo *github.Repository) ([]*github.RepositoryCommit, error) {
 	var commitsList []*github.RepositoryCommit
-	// var uniqueList []*github.RepositoryCommit
 		opt := &github.CommitsListOptions{SHA: "master", Author: username, Since: yearAgo, ListOptions: github.ListOptions{PerPage: 30}}
 		if repo.GetSize() != 0 {
 		for {
